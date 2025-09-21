@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -55,9 +55,12 @@
       50% { transform: scale(1.05); }
     }
 
-    /* Responsive */
+    /* Responsive for Mobile */
     @media (max-width: 600px) {
-      h1 { font-size: 1.6rem; }
+      h1 { 
+        font-size: 1.6rem; 
+        white-space: nowrap;   /* Prevent text wrapping */
+      }
       p { font-size: 1rem; }
       .notify { padding: 12px 20px; font-size: 0.9rem; }
     }
