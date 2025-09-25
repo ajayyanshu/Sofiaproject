@@ -256,7 +256,7 @@
     
     <div class="action-buttons">
         <form class="subscribe-form" id="notifyForm">
-            <input type="email" placeholder="Enter your email" required>
+            <input type="email" name="email" placeholder="Enter your email" required>
             <button type="submit">Notify Me</button>
         </form>
         <button class="learn-more-btn" id="learnMoreBtn">Learn More</button>
@@ -283,7 +283,6 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // --- Particles.js Initialization ---
-      // Check if particlesJS is loaded
       if (typeof particlesJS !== 'undefined') {
         particlesJS('particles-js', {
           "particles": {
@@ -331,11 +330,22 @@
       if(notifyForm) {
         notifyForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            const emailInput = this.querySelector('input[type="email"]');
+            const userEmail = emailInput.value;
+
+            const recipient = 'ajayyanshu@gmail.com';
+            const subject = 'New Subscriber for Sofia AI';
+            const body = `A new user has subscribed for Sofia AI updates with the following email address:\n\n${userEmail}`;
+            
+            const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+            window.location.href = mailtoLink;
+
             const button = this.querySelector('button');
             button.innerText = 'Thank You!';
             button.style.backgroundColor = '#1B5E20';
             button.disabled = true;
-            this.querySelector('input').disabled = true;
+            emailInput.disabled = true;
         });
       }
 
