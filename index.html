@@ -2,22 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Sofia AI - Coming Soon</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    body {
+    html, body {
       margin: 0;
-      height: 100vh;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden; /* Prevents scrolling for an app-like feel */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
       display: flex;
       justify-content: center;
       align-items: center;
       background-color: #1a1a1a;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
       color: #fff;
-      padding: 20px;
-      overflow: hidden; /* Hide scrollbars from particles */
     }
 
     #particles-js {
@@ -26,40 +30,42 @@
         height: 100%;
         top: 0;
         left: 0;
-        z-index: -1;
+        z-index: 0;
         background-image: linear-gradient(135deg, #4CAF50, #2E7D32);
     }
 
     .container {
       animation: fadeInUp 1s ease-in-out;
       max-width: 600px;
+      width: 90%;
       background-color: rgba(0,0,0,0.3);
-      padding: 40px;
+      padding: 30px;
       border-radius: 20px;
       box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.18);
       z-index: 1;
+      box-sizing: border-box;
     }
 
     h1 {
       font-size: 2.5rem;
-      margin-bottom: 15px;
+      margin: 0 0 10px 0;
       animation: pulse 2s infinite;
-      line-height: 1.3;
+      line-height: 1.2;
       text-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
     }
 
     p {
       font-size: 1.1rem;
-      margin-bottom: 25px;
+      margin: 0 0 20px 0;
     }
 
     #countdown {
       display: flex;
       justify-content: center;
       gap: 15px;
-      margin: 25px 0;
+      margin: 20px 0;
     }
 
     .countdown-item {
@@ -67,7 +73,7 @@
       flex-direction: column;
       align-items: center;
       background: rgba(0, 0, 0, 0.2);
-      padding: 10px 15px;
+      padding: 10px;
       border-radius: 10px;
       min-width: 60px;
     }
@@ -78,8 +84,8 @@
     }
 
     .countdown-item p {
-      margin: 0;
-      font-size: 0.8rem;
+      margin-top: 5px;
+      font-size: 0.7rem;
       text-transform: uppercase;
     }
 
@@ -87,7 +93,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 20px;
+        gap: 15px;
+        width: 100%;
     }
     
     .subscribe-form {
@@ -100,26 +107,23 @@
 
     .subscribe-form input {
         width: 60%;
-        padding: 14px;
+        padding: 12px;
         border-radius: 10px;
         border: 1px solid rgba(255, 255, 255, 0.3);
         background: rgba(255, 255, 255, 0.1);
         color: white;
         font-size: 1rem;
+        box-sizing: border-box;
     }
 
-    .subscribe-form input::placeholder {
-        color: #ccc;
-    }
+    .subscribe-form input::placeholder { color: #ccc; }
 
     .subscribe-form button {
       background: #4CAF50;
       color: white;
-      padding: 14px 22px;
+      padding: 12px 20px;
       border-radius: 10px;
-      text-decoration: none;
       font-weight: bold;
-      display: inline-block;
       transition: transform 0.3s, background 0.3s;
       border: none;
       cursor: pointer;
@@ -135,13 +139,15 @@
         background: transparent;
         color: #4CAF50;
         border: 2px solid #4CAF50;
-        padding: 12px 28px;
+        padding: 10px 25px;
         border-radius: 10px;
         font-weight: bold;
         cursor: pointer;
         transition: background 0.3s, color 0.3s;
         text-transform: uppercase;
         letter-spacing: 1px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .learn-more-btn:hover {
@@ -149,14 +155,12 @@
         color: white;
     }
 
-    .social-media {
-      margin-top: 30px;
-    }
+    .social-media { margin-top: 20px; }
 
     .social-media a {
       color: #fff;
       font-size: 1.5rem;
-      margin: 0 15px;
+      margin: 0 12px;
       text-decoration: none;
       transition: transform 0.3s, color 0.3s;
       display: inline-block;
@@ -167,7 +171,6 @@
       color: #4CAF50;
     }
     
-    /* Modal Styles */
     .modal-overlay {
         position: fixed;
         top: 0;
@@ -203,29 +206,14 @@
         transition: transform 0.4s;
     }
     
-    .modal-overlay.active .modal-content {
-        transform: scale(1);
-    }
-
-    .modal-content h2 {
-        color: #4CAF50;
-        margin-top: 0;
-    }
-    
-    .modal-content p {
-        font-size: 1rem;
-        line-height: 1.6;
-    }
-
+    .modal-overlay.active .modal-content { transform: scale(1); }
+    .modal-content h2 { color: #4CAF50; margin-top: 0; }
+    .modal-content p { font-size: 1rem; line-height: 1.6; }
     .close-btn {
         position: absolute;
-        top: 15px;
-        right: 15px;
-        font-size: 1.5rem;
-        color: #fff;
-        cursor: pointer;
-        border: none;
-        background: none;
+        top: 15px; right: 15px;
+        font-size: 1.5rem; color: #fff;
+        cursor: pointer; border: none; background: none;
     }
 
     @keyframes fadeInUp {
@@ -237,16 +225,19 @@
       50% { transform: scale(1.03); text-shadow: 0 0 20px rgba(76, 175, 80, 1);}
     }
 
+    /* Mobile View Adjustments */
     @media (max-width: 600px) {
-      .container { padding: 30px; }
-      h1 { font-size: 1.8rem; white-space: normal; }
-      p { font-size: 1rem; }
-      #countdown { gap: 8px; }
-      .countdown-item { padding: 8px 10px; min-width: 50px;}
+      .container { padding: 20px; }
+      h1 { font-size: 1.8rem; }
+      p { font-size: 0.9rem; margin-bottom: 15px; }
+      #countdown { gap: 10px; margin: 15px 0; }
+      .countdown-item { padding: 8px; min-width: 0; flex: 1; }
       .countdown-item span { font-size: 1.5rem; }
-      .subscribe-form { flex-direction: column; width: auto; }
+      .countdown-item p { font-size: 0.6rem; }
+      
+      .subscribe-form { flex-direction: column; }
       .subscribe-form input { width: 100%; }
-      .social-media a { font-size: 1.3rem; margin: 0 10px; }
+      .subscribe-form button { width: 100%; margin-top: 10px;}
     }
   </style>
 </head>
@@ -288,75 +279,87 @@
       </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" async></script>
   <script>
-    // --- Particles.js Initialization ---
-    particlesJS('particles-js', {
-      "particles": {
-        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-        "color": { "value": "#ffffff" },
-        "shape": { "type": "circle" },
-        "opacity": { "value": 0.5, "random": false },
-        "size": { "value": 3, "random": true },
-        "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
-        "move": { "enable": true, "speed": 6, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } },
-        "modes": { "repulse": { "distance": 100 }, "push": { "particles_nb": 4 } }
-      },
-      "retina_detect": true
-    });
-
-    // --- Countdown Timer ---
-    const countDownDate = new Date("Feb 12, 2026 00:00:00").getTime();
-    const countdownInterval = setInterval(function() {
-      const now = new Date().getTime();
-      const distance = countDownDate - now;
-
-      if (distance < 0) {
-        clearInterval(countdownInterval);
-        document.getElementById("countdown").innerHTML = "<p style='font-size: 1.5rem;'>LAUNCHED!</p>";
-        return;
+    document.addEventListener('DOMContentLoaded', function() {
+      // --- Particles.js Initialization ---
+      // Check if particlesJS is loaded
+      if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+          "particles": {
+            "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#ffffff" }, "shape": { "type": "circle" },
+            "opacity": { "value": 0.5, "random": false }, "size": { "value": 3, "random": true },
+            "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
+            "move": { "enable": true, "speed": 4, "direction": "none", "out_mode": "out" }
+          },
+          "interactivity": {
+            "detect_on": "canvas",
+            "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } },
+            "modes": { "repulse": { "distance": 100 }, "push": { "particles_nb": 4 } }
+          },
+          "retina_detect": true
+        });
       }
 
-      document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-      document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
-    }, 1000);
-    
-    // --- Subscription Form ---
-    const notifyForm = document.getElementById('notifyForm');
-    notifyForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const button = this.querySelector('button');
-        button.innerText = 'Thank You!';
-        button.style.backgroundColor = '#1B5E20';
-        button.disabled = true;
-        this.querySelector('input').disabled = true;
-    });
+      // --- Countdown Timer ---
+      const countDownDate = new Date("Feb 12, 2026 00:00:00").getTime();
+      const countdownInterval = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
 
-    // --- Learn More Modal ---
-    const learnMoreBtn = document.getElementById('learnMoreBtn');
-    const learnMoreModal = document.getElementById('learnMoreModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-
-    learnMoreBtn.addEventListener('click', () => {
-        learnMoreModal.classList.add('active');
-    });
-
-    closeModalBtn.addEventListener('click', () => {
-        learnMoreModal.classList.remove('active');
-    });
-    
-    learnMoreModal.addEventListener('click', (e) => {
-        if (e.target === learnMoreModal) {
-            learnMoreModal.classList.remove('active');
+        if (distance < 0) {
+          clearInterval(countdownInterval);
+          const countdownElem = document.getElementById("countdown");
+          if(countdownElem) countdownElem.innerHTML = "<p style='font-size: 1.5rem;'>LAUNCHED!</p>";
+          return;
         }
-    });
 
+        const daysElem = document.getElementById("days");
+        const hoursElem = document.getElementById("hours");
+        const minutesElem = document.getElementById("minutes");
+        const secondsElem = document.getElementById("seconds");
+
+        if(daysElem) daysElem.innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+        if(hoursElem) hoursElem.innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        if(minutesElem) minutesElem.innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        if(secondsElem) secondsElem.innerText = Math.floor((distance % (1000 * 60)) / 1000);
+      }, 1000);
+      
+      // --- Subscription Form ---
+      const notifyForm = document.getElementById('notifyForm');
+      if(notifyForm) {
+        notifyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const button = this.querySelector('button');
+            button.innerText = 'Thank You!';
+            button.style.backgroundColor = '#1B5E20';
+            button.disabled = true;
+            this.querySelector('input').disabled = true;
+        });
+      }
+
+      // --- Learn More Modal ---
+      const learnMoreBtn = document.getElementById('learnMoreBtn');
+      const learnMoreModal = document.getElementById('learnMoreModal');
+      const closeModalBtn = document.getElementById('closeModalBtn');
+
+      if(learnMoreBtn && learnMoreModal && closeModalBtn) {
+        learnMoreBtn.addEventListener('click', () => {
+            learnMoreModal.classList.add('active');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            learnMoreModal.classList.remove('active');
+        });
+        
+        learnMoreModal.addEventListener('click', (e) => {
+            if (e.target === learnMoreModal) {
+                learnMoreModal.classList.remove('active');
+            }
+        });
+      }
+    });
   </script>
 </body>
 </html>
