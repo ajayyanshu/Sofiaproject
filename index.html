@@ -1,9 +1,10 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sofia AI - Coming Soon</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     body {
       margin: 0;
@@ -11,39 +12,220 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #4CAF50, #81C784);
+      background-color: #1a1a1a;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
       color: #fff;
       padding: 20px;
+      overflow: hidden; /* Hide scrollbars from particles */
     }
+
+    #particles-js {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        background-image: linear-gradient(135deg, #4CAF50, #2E7D32);
+    }
+
     .container {
       animation: fadeInUp 1s ease-in-out;
       max-width: 600px;
+      background-color: rgba(0,0,0,0.3);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      z-index: 1;
     }
+
     h1 {
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       margin-bottom: 15px;
       animation: pulse 2s infinite;
       line-height: 1.3;
+      text-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
     }
+
     p {
       font-size: 1.1rem;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
-    .notify {
-      background: #2E7D32;
+
+    #countdown {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 25px 0;
+    }
+
+    .countdown-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 10px 15px;
+      border-radius: 10px;
+      min-width: 60px;
+    }
+
+    .countdown-item span {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .countdown-item p {
+      margin: 0;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .subscribe-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .subscribe-form input {
+        width: 60%;
+        padding: 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 1rem;
+    }
+
+    .subscribe-form input::placeholder {
+        color: #ccc;
+    }
+
+    .subscribe-form button {
+      background: #4CAF50;
       color: white;
-      padding: 14px 28px;
+      padding: 14px 22px;
       border-radius: 10px;
       text-decoration: none;
       font-weight: bold;
       display: inline-block;
       transition: transform 0.3s, background 0.3s;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
     }
-    .notify:hover {
-      background: #1B5E20;
+
+    .subscribe-form button:hover {
+      background: #388E3C;
       transform: scale(1.05);
+    }
+
+    .learn-more-btn {
+        background: transparent;
+        color: #4CAF50;
+        border: 2px solid #4CAF50;
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s, color 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .learn-more-btn:hover {
+        background: #4CAF50;
+        color: white;
+    }
+
+    .social-media {
+      margin-top: 30px;
+    }
+
+    .social-media a {
+      color: #fff;
+      font-size: 1.5rem;
+      margin: 0 15px;
+      text-decoration: none;
+      transition: transform 0.3s, color 0.3s;
+      display: inline-block;
+    }
+
+    .social-media a:hover {
+      transform: scale(1.2);
+      color: #4CAF50;
+    }
+    
+    /* Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s, visibility 0.4s;
+    }
+    
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .modal-content {
+        background-color: rgba(30,30,30,0.8);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        max-width: 500px;
+        width: 90%;
+        position: relative;
+        transform: scale(0.9);
+        transition: transform 0.4s;
+    }
+    
+    .modal-overlay.active .modal-content {
+        transform: scale(1);
+    }
+
+    .modal-content h2 {
+        color: #4CAF50;
+        margin-top: 0;
+    }
+    
+    .modal-content p {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 1.5rem;
+        color: #fff;
+        cursor: pointer;
+        border: none;
+        background: none;
     }
 
     @keyframes fadeInUp {
@@ -51,26 +233,131 @@
       100% { opacity: 1; transform: translateY(0); }
     }
     @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      0%, 100% { transform: scale(1); text-shadow: 0 0 10px rgba(76, 175, 80, 0.7);}
+      50% { transform: scale(1.03); text-shadow: 0 0 20px rgba(76, 175, 80, 1);}
     }
 
-    /* Responsive for Mobile */
     @media (max-width: 600px) {
-      h1 { 
-        font-size: 1.6rem; 
-        white-space: nowrap;   /* Prevent text wrapping */
-      }
+      .container { padding: 30px; }
+      h1 { font-size: 1.8rem; white-space: normal; }
       p { font-size: 1rem; }
-      .notify { padding: 12px 20px; font-size: 0.9rem; }
+      #countdown { gap: 8px; }
+      .countdown-item { padding: 8px 10px; min-width: 50px;}
+      .countdown-item span { font-size: 1.5rem; }
+      .subscribe-form { flex-direction: column; width: auto; }
+      .subscribe-form input { width: 100%; }
+      .social-media a { font-size: 1.3rem; margin: 0 10px; }
     }
   </style>
 </head>
 <body>
+  <div id="particles-js"></div>
   <div class="container">
-    <h1>✨ Sofia AI Coming Soon ✨</h1>
-    <p>We’re working hard to bring you something amazing. Stay tuned!</p>
-    <a href="#" class="notify">Notify Me</a>
+    <h1>✨ Sofia AI is Coming Soon ✨</h1>
+    <p>We’re building the future of intelligence. Get ready for something amazing!</p>
+    
+    <div id="countdown">
+      <div class="countdown-item"><span id="days">0</span><p>Days</p></div>
+      <div class="countdown-item"><span id="hours">0</span><p>Hours</p></div>
+      <div class="countdown-item"><span id="minutes">0</span><p>Minutes</p></div>
+      <div class="countdown-item"><span id="seconds">0</span><p>Seconds</p></div>
+    </div>
+    
+    <div class="action-buttons">
+        <form class="subscribe-form" id="notifyForm">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit">Notify Me</button>
+        </form>
+        <button class="learn-more-btn" id="learnMoreBtn">Learn More</button>
+    </div>
+
+    <div class="social-media">
+      <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+      <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    </div>
   </div>
+
+  <div class="modal-overlay" id="learnMoreModal">
+      <div class="modal-content">
+          <button class="close-btn" id="closeModalBtn">&times;</button>
+          <h2>What is Sofia AI?</h2>
+          <p>Sofia AI is a next-generation platform designed to revolutionize how we interact with technology. Our mission is to create intelligent, intuitive, and helpful tools that seamlessly integrate into your daily life.</p>
+          <p>Stay tuned as we unveil a new era of artificial intelligence.</p>
+      </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    // --- Particles.js Initialization ---
+    particlesJS('particles-js', {
+      "particles": {
+        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+        "color": { "value": "#ffffff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5, "random": false },
+        "size": { "value": 3, "random": true },
+        "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
+        "move": { "enable": true, "speed": 6, "direction": "none", "random": false, "straight": false, "out_mode": "out" }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } },
+        "modes": { "repulse": { "distance": 100 }, "push": { "particles_nb": 4 } }
+      },
+      "retina_detect": true
+    });
+
+    // --- Countdown Timer ---
+    const countDownDate = new Date("Feb 12, 2026 00:00:00").getTime();
+    const countdownInterval = setInterval(function() {
+      const now = new Date().getTime();
+      const distance = countDownDate - now;
+
+      if (distance < 0) {
+        clearInterval(countdownInterval);
+        document.getElementById("countdown").innerHTML = "<p style='font-size: 1.5rem;'>LAUNCHED!</p>";
+        return;
+      }
+
+      document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+      document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+    }, 1000);
+    
+    // --- Subscription Form ---
+    const notifyForm = document.getElementById('notifyForm');
+    notifyForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const button = this.querySelector('button');
+        button.innerText = 'Thank You!';
+        button.style.backgroundColor = '#1B5E20';
+        button.disabled = true;
+        this.querySelector('input').disabled = true;
+    });
+
+    // --- Learn More Modal ---
+    const learnMoreBtn = document.getElementById('learnMoreBtn');
+    const learnMoreModal = document.getElementById('learnMoreModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    learnMoreBtn.addEventListener('click', () => {
+        learnMoreModal.classList.add('active');
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        learnMoreModal.classList.remove('active');
+    });
+    
+    learnMoreModal.addEventListener('click', (e) => {
+        if (e.target === learnMoreModal) {
+            learnMoreModal.classList.remove('active');
+        }
+    });
+
+  </script>
 </body>
 </html>
+
