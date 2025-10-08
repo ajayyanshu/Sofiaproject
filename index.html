@@ -43,6 +43,27 @@
             background-color: #ffffff;
             border: 1px solid #e2e8f0; /* slate-200 */
         }
+        /* Chatbot styles */
+        #chat-bubble {
+            transition: transform 0.3s ease;
+        }
+        #chat-bubble:hover {
+            transform: scale(1.1);
+        }
+        #chat-window {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        #chat-notification {
+            transition: opacity 0.5s ease;
+        }
+        .message-bubble-user {
+            background-color: #4f46e5;
+            color: #ffffff;
+        }
+        .message-bubble-bot {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
     </style>
 </head>
 <body class="text-slate-700 antialiased">
@@ -166,7 +187,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="testimonial-card bg-white p-8 rounded-2xl border border-slate-200">
                         <p class="text-slate-600 mb-6">"Sofia has completely changed how I manage my workflow. Reading through research papers is now a breeze. It's an indispensable tool for any academic."</p>
-                        <div class="flex items-center"><img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/4F46E5/FFFFFF?text=JD" alt="User Avatar"><div><p class="font-semibold text-slate-900">Dr. Priya Sharma</p><p class="text-slate-500">University Professor</p></div></div>
+                        <div class="flex items-center"><img class="w-12 h-12 rounded-full mr-4" src="https://placehold.co/100x100/4F46E5/FFFFFF?text=JD" alt="User Avatar"><div><p class="font-semibold text-slate-900">Dr. Jane Doe</p><p class="text-slate-500">University Professor</p></div></div>
                     </div>
                     <div class="testimonial-card bg-white p-8 rounded-2xl border border-slate-200">
                         <p class="text-slate-600 mb-6">"The live video feature is like having a co-pilot for life. Whether I'm trying to identify a plant or navigate a new city, Sofia is there to help. Incredible!"</p>
@@ -247,6 +268,43 @@
         </div>
     </footer>
 
+    <!-- Chatbot -->
+    <div id="chat-container" class="fixed bottom-5 right-5 z-50">
+        <!-- Notification Bubble -->
+        <div id="chat-notification" class="hidden absolute bottom-20 right-0 bg-white p-3 rounded-lg shadow-xl text-sm text-slate-800 w-48 text-center cursor-pointer">
+            <p class="font-semibold">Have a question?</p>
+            <p>Click me to ask a question!</p>
+        </div>
+        
+        <!-- Chat Bubble -->
+        <div id="chat-bubble" class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center cursor-pointer shadow-lg">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+        </div>
+
+        <!-- Chat Window -->
+        <div id="chat-window" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white rounded-xl shadow-2xl flex flex-col transform origin-bottom-right">
+            <!-- Header -->
+            <div class="bg-indigo-600 text-white p-4 rounded-t-xl flex justify-between items-center">
+                <h3 class="font-semibold text-lg">Sofia AI Support</h3>
+                <button id="close-chat" class="text-white hover:text-indigo-200 text-2xl leading-none">&times;</button>
+            </div>
+            <!-- Messages -->
+            <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto h-80">
+                <!-- Messages will be injected here -->
+            </div>
+            <!-- Input -->
+            <div class="p-4 border-t border-slate-200">
+                <form id="chat-form" class="flex items-center gap-2">
+                    <input id="chat-input" type="text" placeholder="Ask a question..." class="w-full px-4 py-2 text-slate-800 bg-slate-100 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none transition" autocomplete="off">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg shrink-0">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 <script>
     // Intersection Observer to reveal sections on scroll
     const revealElements = document.querySelectorAll('.reveal');
@@ -266,14 +324,16 @@
 
     // Countdown Timer Logic
     const countdownDate = new Date("Feb 12, 2026 00:00:00").getTime();
-
     const updateCountdown = setInterval(function() {
         const now = new Date().getTime();
         const distance = countdownDate - now;
+        const countdownTimerEl = document.getElementById("countdown-timer");
 
         if (distance < 0) {
             clearInterval(updateCountdown);
-            document.getElementById("countdown-timer").innerHTML = "<div class='text-2xl font-bold text-indigo-600 col-span-4'>Sofia AI Has Arrived!</div>";
+            if (countdownTimerEl) {
+                 countdownTimerEl.innerHTML = "<div class='text-2xl font-bold text-indigo-600 col-span-4'>Sofia AI Has Arrived!</div>";
+            }
             return;
         }
 
@@ -296,13 +356,114 @@
         const recipient = 'contact@sofia-ai.com'; // Replace with your email
         const subject = 'Please Add Me to the Sofia AI Waitlist';
         const body = `Hi, I'd like to be notified at ${userEmail} when Sofia AI launches. Thanks!`;
-        
         const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        
         window.location.href = mailtoLink;
     });
+
+    // Chatbot Logic
+    const chatBubble = document.getElementById('chat-bubble');
+    const chatWindow = document.getElementById('chat-window');
+    const closeChatBtn = document.getElementById('close-chat');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatNotification = document.getElementById('chat-notification');
+
+    let chatInitiated = false;
+
+    // Show notification to first-time visitors (per session)
+    if (!sessionStorage.getItem('sofiaChatVisited')) {
+        setTimeout(() => {
+            chatNotification.classList.remove('hidden');
+        }, 3000); // Show after 3 seconds
+    }
+    
+    function openChat() {
+        chatWindow.classList.remove('hidden');
+        chatNotification.classList.add('hidden');
+        sessionStorage.setItem('sofiaChatVisited', 'true');
+        if (!chatInitiated) {
+            addMessage('bot', "Hi there! I'm Sofia's support assistant. How can I help you today?");
+            chatInitiated = true;
+        }
+    }
+
+    function closeChat() {
+        chatWindow.classList.add('hidden');
+    }
+
+    // Toggle chat window with bubble icon
+    chatBubble.addEventListener('click', () => {
+        if (chatWindow.classList.contains('hidden')) {
+            openChat();
+        } else {
+            closeChat();
+        }
+    });
+
+    // Open chat with notification click
+    chatNotification.addEventListener('click', openChat);
+
+    // Close chat with 'x' button
+    closeChatBtn.addEventListener('click', closeChat);
+
+    // Handle message submission
+    chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const userMessage = chatInput.value.trim();
+        if (userMessage) {
+            addMessage('user', userMessage);
+            chatInput.value = '';
+            setTimeout(() => {
+                const botResponse = getBotResponse(userMessage);
+                addMessage('bot', botResponse);
+            }, 1000);
+        }
+    });
+
+    // Add a message to the chat window
+    function addMessage(sender, text) {
+        const messageBubble = document.createElement('div');
+        messageBubble.classList.add('p-3', 'rounded-lg', 'max-w-xs', 'break-words');
+        
+        if (sender === 'user') {
+            messageBubble.classList.add('message-bubble-user', 'self-end', 'ml-auto');
+        } else {
+            messageBubble.classList.add('message-bubble-bot', 'self-start', 'mr-auto');
+        }
+        
+        messageBubble.innerText = text;
+        chatMessages.appendChild(messageBubble);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Generate bot response
+    function getBotResponse(userInput) {
+        const lowerInput = userInput.toLowerCase();
+        
+        if (lowerInput.includes('what is sofia') || lowerInput.includes('what are you')) {
+            return "I am a support assistant for Sofia AI. Sofia is a personal AI assistant designed to help you with tasks like reading documents, web searches, and more!";
+        } else if (lowerInput.includes('pricing') || lowerInput.includes('cost') || lowerInput.includes('paid')) {
+            return "Sofia AI offers a free tier with basic features. The full-featured paid plan is ₹99 (INR). More details on what each plan includes will be available at launch.";
+        } else if (lowerInput.includes('contact') || lowerInput.includes('email')) {
+             return "You can reach our support team by emailing ajayyanshu@gmail.com.";
+        } else if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
+            return "Hello! How can I assist you with Sofia AI?";
+        } else if (lowerInput.includes('launch') || lowerInput.includes('release')) {
+            return "Sofia AI is scheduled to launch on February 12, 2026! You can sign up for notifications on our homepage.";
+        } else if (lowerInput.includes('feature') || lowerInput.includes('what can it do')) {
+            return "Sofia can read documents, interact via live video, search the web, take voice commands, and even send you daily text messages. We are also working on a cybersecurity feature!";
+        } else if (lowerInput.includes('support') || lowerInput.includes('help')) {
+            return "You're speaking with the support bot right now! If you need to speak to a human, please email ajayyanshu@gmail.com.";
+        } else if (lowerInput.includes('bye') || lowerInput.includes('thanks')) {
+            return "You're welcome! Have a great day.";
+        } else {
+            return "I'm sorry, I didn't quite understand that. You can ask about features, pricing, or the launch date. For more complex questions, feel free to email our team at ajayyanshu@gmail.com.";
+        }
+    }
 </script>
 
 </body>
 </html>
+
 
