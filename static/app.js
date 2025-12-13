@@ -1,4 +1,4 @@
-// ===== Elements =====
+// ===== Elements ===== 
 const chatArea   = document.getElementById("chatArea");
 const userInput  = document.getElementById("userInput");
 const sendBtn    = document.getElementById("sendBtn");
