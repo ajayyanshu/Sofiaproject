@@ -1,0 +1,166 @@
+<!DOCTYPE html> 
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Sofia AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f6f5f7;
+        }
+        .auth-main-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+            position: relative;
+            overflow: hidden;
+            width: 420px;
+            max-width: 100%;
+        }
+        .form-container form {
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 2rem 50px;
+            text-align: center;
+        }
+         .auth-main-container input {
+            background-color: #f6f5f7;
+            border: 1px solid transparent; /* Added for smooth transition */
+            padding: 12px 15px;
+            margin-top: 0.5rem;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s ease-in-out; /* Smooth transition */
+        }
+        .auth-main-container input:focus {
+            outline: none;
+            border-color: #3B82F6;
+            background-color: #fff;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        .auth-main-container button {
+            border-radius: 20px;
+            border: 1px solid #FF4B2B;
+            background-color: #FF4B2B;
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 12px 45px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: transform 80ms ease-in;
+            cursor: pointer;
+            margin-top: 1.5rem;
+        }
+        .auth-main-container button:active {
+            transform: scale(0.95);
+        }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 480px) {
+            .form-container form {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+             body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center h-full">
+
+    <div class="auth-main-container">
+        <div class="form-container">
+            <!-- Sign Up Form -->
+            <form id="sign-up-form" autocomplete="off">
+                <h1 class="text-3xl font-bold mb-2">Create Account</h1>
+                <span class="text-sm text-gray-500 mb-4">or use your email for registration</span>
+                
+                <div class="w-full text-left">
+                    <label for="signup-name" class="text-sm font-medium text-gray-700">Name</label>
+                    <input type="text" id="signup-name" placeholder="Your Name" required autocomplete="name" />
+                </div>
+                
+                <div class="w-full text-left mt-2">
+                    <label for="signup-email" class="text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="signup-email" placeholder="your@email.com" required autocomplete="email" />
+                </div>
+
+                <div class="w-full text-left mt-2">
+                    <label for="signup-password" class="text-sm font-medium text-gray-700">Password</label>
+                    <div class="relative">
+                        <input type="password" id="signup-password" placeholder="Password (8+ characters)" required autocomplete="new-password" minlength="8" />
+                        <i class="fas fa-eye absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-gray-500" id="password-toggle-icon" style="top: calc(50% + 4px);"></i>
+                    </div>
+                </div>
+
+                <button class="w-full">Sign Up</button>
+                <p id="signup-error" class="text-red-500 text-sm mt-2 h-5"></p>
+                <p class="mt-4 text-sm">
+                    Already have an account? 
+                    <a href="/login" class="font-semibold text-blue-600 hover:underline">Sign In</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const signUpForm = document.getElementById('sign-up-form');
+        const passwordInput = document.getElementById('signup-password');
+        const passwordToggleIcon = document.getElementById('password-toggle-icon');
+
+        // --- Toggle Password Visibility ---
+        passwordToggleIcon.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            passwordToggleIcon.classList.toggle('fa-eye');
+            passwordToggleIcon.classList.toggle('fa-eye-slash');
+        });
+
+        // --- Handle Sign Up Form Submission ---
+        signUpForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const password = passwordInput.value;
+            const errorEl = document.getElementById('signup-error');
+            errorEl.textContent = '';
+
+            // Password length validation
+            if (password.length < 8) {
+                errorEl.textContent = 'Password must be at least 8 characters.';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/signup', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // On successful signup, redirect to the login page
+                    window.location.href = '/login';
+                } else {
+                    errorEl.textContent = data.error || "An unknown error occurred.";
+                }
+            } catch (error) {
+                console.error('Signup Error:', error);
+                errorEl.textContent = "Could not connect to the server.";
+            }
+        });
+    </script>
+</body>
+</html>
+
