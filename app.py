@@ -203,6 +203,11 @@ def login_redirect():
 @app.route('/signup')
 def signup_redirect():
     return redirect(url_for('signup_page'))
+  
+  # --- Add this NEW route here ---
+@app.route('/reset-password')
+def reset_password_page():
+    return render_template('reset_password.html')
 
 # --- Auth: Email Verification Route ---
 @app.route('/verify/<token>', methods=['GET'])
