@@ -69,7 +69,6 @@
 
     <div class="auth-main-container">
         <div class="form-container">
-            <!-- Sign In Form -->
             <form id="sign-in-form" autocomplete="off" class="space-y-4">
                 <div class="text-center">
                     <h1 class="text-3xl font-bold">Sign In</h1>
@@ -101,7 +100,6 @@
                 </p>
             </form>
 
-            <!-- Forgot Password Form -->
             <form id="forgot-password-form" autocomplete="off" style="display: none;">
                 <h1 class="text-3xl font-bold mb-2">Reset Password</h1>
                 <span class="text-sm text-gray-500 mb-4">Enter your email to get a reset link</span>
@@ -175,11 +173,12 @@
             e.preventDefault();
             const email = document.getElementById('forgot-email').value.trim();
             const messageEl = document.getElementById('forgot-message');
-            messageEl.textContent = '';
+            messageEl.textContent = 'Sending...';
             messageEl.classList.remove('text-green-500', 'text-red-500');
 
             try {
-                const response = await fetch('/api/forgot-password', {
+                // *** FIX: Changed URL from /api/forgot-password to /api/request_password_reset ***
+                const response = await fetch('/api/request_password_reset', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ email })
@@ -203,4 +202,3 @@
     </script>
 </body>
 </html>
-
